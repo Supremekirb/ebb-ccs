@@ -135,7 +135,7 @@ void ByteChunk::Char(unsigned int n)
 {
 	// TODO: character set mapping should be moved to a higher level;
 	// we want to be able to support multiple mappings easily.
-	Byte(n + 0x30);
+	Byte(n + 0x80);
 	cinfo[pos-1] = true;
 }
 
@@ -516,7 +516,7 @@ string ByteChunk::ToString() const
 				result << ' ';
 		}
 		else
-			result << (char)(bytes[i] - 0x30);
+			result << (char)(bytes[i] - 0x80);
 	}
 	return result.str();
 }

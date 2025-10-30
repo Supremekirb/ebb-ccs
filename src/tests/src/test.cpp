@@ -354,7 +354,7 @@ Test::State Test::DoString(const string& str, string::const_iterator& i)
 	}
 
 	// Emit character and continue
-	expect_data.push_back(c + 0x30);
+	expect_data.push_back(c + 0x80);
 	expect_string += c;
 
 	return in_quote;
