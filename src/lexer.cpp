@@ -1,12 +1,7 @@
 /* CCScript lexical analyzer/scanner */
 
 
-#include <bitset>
-#include <iostream>
 #include <string>
-#include <sstream>
-#include <iomanip>
-#include <errno.h>
 #include "lexer.h"
 
 using namespace std;
@@ -302,20 +297,10 @@ symbol Lexer::LexNumber()
 	if(isalnum(current)) {
 		Error("number has invalid suffix");
 	}
-	unsigned int temp = 0;
-	if (radix == 2) {
-	    // stringstream only supports decimal, hexadecimal, and octal,
-		// so we need to handle binary manually.
-		// TODO: throw a warning when overflowing in this case
-		temp = std::bitset<32>(currentstr.substr(2)).to_ulong();
-	}
-	else {
-        stringstream ss(currentstr);
-        ss >> setbase(radix) >> temp;
-        if(ss.fail()) {
-            Warning("integer constant capped at 0xffffffff");
-            temp = 0xffffffff;
-        }
+	unsigned long long temp = std::strtoull(currentstr.c_str(), nullptr, radix);
+	if (temp > 0xffffffff) {
+	    temp = 0xffffffff;
+	    Warning("integer constant capped at 0xffffffff");
 	}
 
 	currentint = temp;
